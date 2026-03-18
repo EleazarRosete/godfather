@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Smooth tap feel on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent text selection on rapid taps */
+button {
+  user-select: none;
+  -webkit-user-select: none;
+}
