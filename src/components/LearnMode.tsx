@@ -73,10 +73,6 @@ export function LearnMode({ onExit }: LearnModeProps) {
     return () => window.removeEventListener('keydown', onKey);
   }, [index, visible.length]);
 
-  function dataFor(letter: string): LetterData {
-    return ALPHABET_DATA.find(d => d.letter === letter)!;
-  }
-
   const filterMeta: Record<Filter, { label: string; emoji: string; gradient: string }> = {
     vowels:     { label: 'Vowels',     emoji: '🅰️', gradient: 'from-pink-500 to-rose-500'     },
     consonants: { label: 'Consonants', emoji: '🔡', gradient: 'from-violet-500 to-purple-600'  },
