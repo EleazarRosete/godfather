@@ -161,7 +161,6 @@ export function LearnMode({ onExit }: LearnModeProps) {
               style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(10px)' }}
             >
               {visible.map((letter, i) => {
-                const d = dataFor(letter);
                 const isActive = i === index;
                 return (
                   <button
