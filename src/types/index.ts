@@ -19,7 +19,7 @@ export type NavItem = {
   enabled: boolean;
 };
 
-export type NavPage = 'home' | 'learn' | 'play' | 'dashboard' | 'profiles' | 'logout';
+export type NavPage = 'home' | 'learn' | 'play' | 'story' | 'song' | 'dashboard' | 'profiles' | 'logout' | 'report';
 
 export interface LetterCardProps {
   data: LetterData;
@@ -40,6 +40,8 @@ export interface AlphabetGridProps {
 export interface SideNavProps {
   currentPage: NavPage;
   onNavigate: (page: NavPage) => void;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 export interface LearnModeProps {

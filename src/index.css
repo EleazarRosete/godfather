@@ -2,13 +2,383 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Smooth tap feel on mobile */
-* {
-  -webkit-tap-highlight-color: transparent;
+/* ─── Music bar animation ────────────────────────────────────────── */
+@keyframes musicBar {
+  from { transform: scaleY(0.4); }
+  to   { transform: scaleY(1.2); }
+}
+* { -webkit-tap-highlight-color: transparent; }
+button { user-select: none; -webkit-user-select: none; }
+
+/* Kill ALL browser-default button hover/focus visual changes */
+button:hover,
+button:focus,
+button:focus-visible {
+  opacity: 1 !important;
+  filter: none !important;
+  outline: none !important;
 }
 
-/* Prevent text selection on rapid taps */
-button {
-  user-select: none;
-  -webkit-user-select: none;
+/* ─── Navbar background gradient ────────────────────────────────── */
+.nav-bg {
+  background: linear-gradient(
+    180deg,
+    #d4eaff 0%,
+    #e8d8ff 28%,
+    #ffd8ef 55%,
+    #fff4c8 78%,
+    #ffdfc8 100%
+  );
+}
+
+/* ─── Fuzzy SVG filters (referenced by id in the SVG defs) ──────── */
+/* Nothing needed here — filters live inline in the SVG defs blocks  */
+
+/* ─── Pill button shared base ────────────────────────────────────── */
+.pill-btn {
+  display: block;
+  width: 100%;
+  border-radius: 9999px;
+  border-width: 3px;
+  border-style: solid;
+  font-family: "Fredoka One", cursive;
+  font-size: 1.125rem;     /* 18px */
+  letter-spacing: 0.04em;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  overflow: visible;
+  transition:
+    transform 0.12s cubic-bezier(0.34, 1.2, 0.64, 1),
+    box-shadow 0.12s ease,
+    background 0.12s ease,
+    padding    0.12s ease;
+}
+
+/* Gloss overlay inside each pill */
+.pill-btn::before {
+  content: '';
+  position: absolute;
+  top: 3px; left: 8px; right: 8px;
+  height: 38%;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 50px 50px 80% 80%;
+  pointer-events: none;
+  transition: opacity 0.1s;
+}
+
+/* Hide gloss when active/pressed */
+.pill-btn.is-active::before { opacity: 0; }
+
+/* ─── Per-button color themes ─────────────────────────────────────── */
+
+/* Pink — Home */
+.pill-pink {
+  background: linear-gradient(180deg, #fff 0%, #ffc2d1 18%, #ffc2d1 82%, #f9a8c0 100%);
+  border-color: #f9a8c0;
+  color: #8a3a52;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+  box-shadow: 0 7px 0 #e8849e, 0 9px 18px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.9);
+  filter: url(#fuzzy-home);
+  padding: 12px 18px;
+}
+.pill-pink:hover:not(.is-active) {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 0 #e8849e, 0 14px 22px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.9);
+}
+.pill-pink.is-active {
+  background: linear-gradient(180deg, #e8849e 0%, #e8849e 100%);
+  border-color: #e8849e;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  box-shadow: inset 0 4px 8px rgba(0,0,0,0.18), inset 0 1px 3px rgba(0,0,0,0.12);
+  transform: translateY(6px);
+  padding: 14px 18px 10px;
+}
+
+/* Blue — Report */
+.pill-blue {
+  background: linear-gradient(180deg, #fff 0%, #b8e4fc 18%, #b8e4fc 82%, #9ad4f8 100%);
+  border-color: #9ad4f8;
+  color: #2a5a82;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+  box-shadow: 0 7px 0 #72b8e8, 0 9px 18px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.9);
+  filter: url(#fuzzy-report);
+  padding: 12px 18px;
+}
+.pill-blue:hover:not(.is-active) {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 0 #72b8e8, 0 14px 22px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.9);
+}
+.pill-blue.is-active {
+  background: linear-gradient(180deg, #72b8e8 0%, #72b8e8 100%);
+  border-color: #72b8e8;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  box-shadow: inset 0 4px 8px rgba(0,0,0,0.18), inset 0 1px 3px rgba(0,0,0,0.12);
+  transform: translateY(6px);
+  padding: 14px 18px 10px;
+}
+
+/* Yellow — Profile */
+.pill-yellow {
+  background: linear-gradient(180deg, #fff 0%, #fff0a8 18%, #fff0a8 82%, #ffe87a 100%);
+  border-color: #ffe87a;
+  color: #7a5e10;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+  box-shadow: 0 7px 0 #e8cc50, 0 9px 18px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.9);
+  filter: url(#fuzzy-profile);
+  padding: 12px 18px;
+}
+.pill-yellow:hover:not(.is-active) {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 0 #e8cc50, 0 14px 22px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.9);
+}
+.pill-yellow.is-active {
+  background: linear-gradient(180deg, #e8cc50 0%, #e8cc50 100%);
+  border-color: #e8cc50;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  box-shadow: inset 0 4px 8px rgba(0,0,0,0.18), inset 0 1px 3px rgba(0,0,0,0.12);
+  transform: translateY(6px);
+  padding: 14px 18px 10px;
+}
+
+/* Peach — Logout */
+.pill-peach {
+  background: linear-gradient(180deg, #fff 0%, #ffd4b0 18%, #ffd4b0 82%, #ffbc88 100%);
+  border-color: #ffbc88;
+  color: #7a3e10;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+  box-shadow: 0 7px 0 #e89860, 0 9px 18px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.9);
+  filter: url(#fuzzy-logout);
+  padding: 12px 18px;
+}
+.pill-peach:hover:not(.is-active) {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 0 #e89860, 0 14px 22px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.9);
+}
+.pill-peach.is-active {
+  background: linear-gradient(180deg, #e89860 0%, #e89860 100%);
+  border-color: #e89860;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  box-shadow: inset 0 4px 8px rgba(0,0,0,0.18), inset 0 1px 3px rgba(0,0,0,0.12);
+  transform: translateY(6px);
+  padding: 14px 18px 10px;
+}
+
+/* ─── Avatar circle ──────────────────────────────────────────────── */
+.avatar-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 9999px;
+  background: linear-gradient(145deg, #ddd4f8 0%, #c4b8f0 100%);
+  border: 3px solid #b0a0e0;
+  box-shadow: 0 4px 14px rgba(120,100,200,0.25), 0 0 0 4px rgba(255,255,255,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 3;
+}
+
+/* ─── Nav card (frosted glass panel) ─────────────────────────────── */
+.nav-card {
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 1.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 4px 20px rgba(160, 140, 200, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ═══════════════════════════════════════════════════
+   PIKO HOME — Premium card grid
+   ═══════════════════════════════════════════════════ */
+
+/* Animated rainbow gradient background */
+.piko-bg {
+  background: linear-gradient(135deg,
+    #c9f0ff 0%,
+    #ddd4ff 25%,
+    #ffd6f0 50%,
+    #fff3c4 75%,
+    #c9f0ff 100%
+  );
+  background-size: 300% 300%;
+  animation: pikoBgShift 10s ease infinite;
+}
+
+@keyframes pikoBgShift {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+
+/* Floating sparkle dots */
+@keyframes pikoFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg);  opacity: 0.7; }
+  33%       { transform: translateY(-14px) rotate(8deg);  opacity: 1;   }
+  66%       { transform: translateY(-6px)  rotate(-5deg); opacity: 0.85;}
+}
+
+@keyframes pikoSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Logo word-mark glow pulse */
+@keyframes pikoGlow {
+  0%, 100% { text-shadow: 0 0 20px rgba(180,140,255,0.5), 0 4px 0 rgba(0,0,0,0.12); }
+  50%       { text-shadow: 0 0 40px rgba(180,140,255,0.9), 0 4px 0 rgba(0,0,0,0.12); }
+}
+
+/* Card entrance stagger */
+@keyframes pikoCardIn {
+  0%   { opacity: 0; transform: translateY(40px) scale(0.88); }
+  100% { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+/* Card idle bob */
+@keyframes pikoCardBob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+/* Wiggle on hover */
+@keyframes pikoWiggle {
+  0%   { transform: rotate(0deg)   scale(1.06); }
+  20%  { transform: rotate(-4deg)  scale(1.08); }
+  40%  { transform: rotate(4deg)   scale(1.08); }
+  60%  { transform: rotate(-2deg)  scale(1.06); }
+  80%  { transform: rotate(2deg)   scale(1.06); }
+  100% { transform: rotate(0deg)   scale(1.06); }
+}
+
+/* Shine sweep across card */
+@keyframes pikoShine {
+  0%   { left: -80%; }
+  100% { left: 130%;  }
+}
+
+/* ── Base card ──────────────────────────────────────── */
+.piko-card {
+  position: relative;
+  border-radius: 2rem;
+  border: 3px solid rgba(255,255,255,0.75);
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    transform 0.18s cubic-bezier(0.34,1.56,0.64,1),
+    box-shadow 0.18s ease;
+  animation: pikoCardIn 0.55s cubic-bezier(0.34,1.56,0.64,1) both;
+  /* card idles with a gentle bob — overridden on hover */
+  /* Using animation-delay for stagger + a 2s pause before loop */
+}
+
+.piko-card::after {
+  /* shine sweep */
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: -80%;
+  width: 50%;
+  background: linear-gradient(
+    105deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.38) 50%,
+    rgba(255,255,255,0) 100%
+  );
+  transform: skewX(-15deg);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+
+.piko-card:active {
+  transform: translateY(4px) scale(0.97);
+  transition-duration: 0.08s;
+}
+
+/* Gloss top sheen */
+.piko-card-gloss {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 45%;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.45) 0%,
+    rgba(255,255,255,0.05) 100%
+  );
+  border-radius: 2rem 2rem 60% 60%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ── Per-card color themes — hover rules removed, handled in React ── */
+
+/* Learn — sky blue */
+.piko-learn {
+  background: linear-gradient(145deg, #a8e4ff 0%, #60c8f8 50%, #38a8e8 100%);
+  box-shadow: 0 10px 0 #2288c8, 0 16px 40px rgba(34,136,200,0.35);
+}
+
+/* Play — soft green */
+.piko-play {
+  background: linear-gradient(145deg, #b8f4c0 0%, #6adc88 50%, #44c46a 100%);
+  box-shadow: 0 10px 0 #28a04a, 0 16px 40px rgba(40,160,74,0.35);
+}
+
+/* Story — warm lavender */
+.piko-story {
+  background: linear-gradient(145deg, #e4d4ff 0%, #c09af8 50%, #a070f0 100%);
+  box-shadow: 0 10px 0 #7040d0, 0 16px 40px rgba(112,64,208,0.35);
+}
+
+/* Song — sunny yellow-orange */
+.piko-song {
+  background: linear-gradient(145deg, #ffe8a0 0%, #ffcc44 50%, #ffa820 100%);
+  box-shadow: 0 10px 0 #d07800, 0 16px 40px rgba(208,120,0,0.35);
+}
+
+/* ── Card label badge ───────────────────────────────── */
+.piko-label {
+  font-family: "Fredoka One", cursive;
+  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-shadow: 0 3px 6px rgba(0,0,0,0.22);
+}
+
+.piko-sublabel {
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+  color: rgba(255,255,255,0.82);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ── Piko logo ──────────────────────────────────────── */
+.piko-logo {
+  font-family: "Fredoka One", cursive;
+  font-size: clamp(2.4rem, 5vw, 3.4rem);
+  color: #fff;
+  letter-spacing: 0.05em;
+  animation: pikoGlow 3s ease-in-out infinite;
+}
+
+.piko-logo span {
+  display: inline-block;
+}
+
+/* Tagline */
+.piko-tagline {
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  font-size: clamp(0.75rem, 1.5vw, 1rem);
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 }

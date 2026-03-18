@@ -267,7 +267,7 @@ export function LearnMode({ onExit }: LearnModeProps) {
 }
 
 // ─── Hold-to-Exit ─────────────────────────────────────────────────────────────
-const HOLD_MS = 1200;
+const HOLD_MS = 3000;
 
 function HoldToExitButton({ onExit }: { onExit: () => void }) {
   const [holding, setHolding]   = useState(false);
